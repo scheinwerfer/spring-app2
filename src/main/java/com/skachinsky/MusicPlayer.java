@@ -1,39 +1,40 @@
 package com.skachinsky;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+@Component
 public class MusicPlayer {
-    private Music music;
+    private List<Music> genreList;
 
+    @Value("${musicPlayer.name}")
     private String name;
-    private int volume;
 
-    public MusicPlayer(Music music) {
-        this.music = music;
-    }
+    @Value("${musicPlayer.volume}")
+    private int volume;
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getVolume() {
         return volume;
     }
 
-    public void setVolume(int volume) {
-        this.volume = volume;
-    }
-
-    public void setMusic(Music music) {
-        this.music = music;
+    @Autowired
+    public MusicPlayer(List<Music> genreList) {
+        this.genreList = genreList;
     }
 
     public void playMusic() {
-        System.out.println("Playing: " +music.getSong());
+        Random rnd = new Random();
+
+        System.out.println(genreList.get(rnd.nextInt(genreList.size())).getSong());
     }
 }
